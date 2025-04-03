@@ -1,1 +1,87 @@
 #Code being written
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Dodging Game</title>
+    <style>
+        body { text-align: center; background: #333; color: white; overflow: hidden; }
+        canvas { background: #555; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <h1>Car Dodging Game</h1>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let player = { x: 175, y: 500, width: 50, height: 100, speed: 5 };
+        let obstacles = [];
+        let gameOver = false;
+        let score = 0;
+        const carImg = new Image();
+        carImg.src = "images/player-car.png"; // Replace with your image path
+        const obstacleImg = new Image();
+        obstacleImg.src = "images/opponent-car.png"; // Replace with your image path
+
+        function drawPlayer() {
+            ctx.drawImage(carImg, player.x, player.y, player.width, player.height);
+        }
+
+        function drawObstacles() {
+            obstacles.forEach(obstacle => {
+                ctx.drawImage(obstacleImg, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            });
+        }
+
+        function moveObstacles() {
+            obstacles.forEach(obstacle => {
+                obstacle.y += 5;
+                if (obstacle.y > canvas.height) {
+                    obstacles.shift();
+                    score++;
+                }
+            });
+        }
+
+        function checkCollision() {
+            obstacles.forEach(obstacle => {
+                if (
+                    player.x < obstacle.x + obstacle.width &&
+                    player.x + player.width > obstacle.x &&
+                    player.y < obstacle.y + obstacle.height &&
+                    player.y + player.height > obstacle.y
+                ) {
+                    gameOver = true;
+                    alert("Game Over! Score: " + score);
+                    document.location.reload();
+                }
+            });
+        }
+
+        function gameLoop() {
+            if (gameOver) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            drawObstacles();
+            moveObstacles();
+            checkCollision();
+            requestAnimationFrame(gameLoop);
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft" && player.x > 0) player.x -= player.speed;
+            if (event.key === "ArrowRight" && player.x < canvas.width - player.width) player.x += player.speed;
+        });
+
+        setInterval(() => {
+            let x = Math.random() * (canvas.width - 50);
+            obstacles.push({ x, y: -100, width: 50, height: 100 });
+        }, 1500);
+
+        gameLoop();
+    </script>
+</body>
+</html>
