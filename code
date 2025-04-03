@@ -24,7 +24,7 @@
         const carImg = new Image();
         carImg.src = "car.png"; // Replace with your image path
         const obstacleImg = new Image();
-        obstacleImg.src = "recent_obstacle"; // Replace with your image path
+        obstacleImg.src = "recent_obstacle.png"; // Replace with your image path
 
         function drawPlayer() {
             ctx.drawImage(carImg, player.x, player.y, player.width, player.height);
