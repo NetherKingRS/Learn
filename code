@@ -22,9 +22,9 @@
         let gameOver = false;
         let score = 0;
         const carImg = new Image();
-        carImg.src = "images/player-car.png"; // Replace with your image path
+        carImg.src = "car.png"; // Replace with your image path
         const obstacleImg = new Image();
-        obstacleImg.src = "images/opponent-car.png"; // Replace with your image path
+        obstacleImg.src = "recent_obstacle"; // Replace with your image path
 
         function drawPlayer() {
             ctx.drawImage(carImg, player.x, player.y, player.width, player.height);
